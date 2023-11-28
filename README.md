@@ -1,4 +1,4 @@
-# TeachableMachine2M5stack
+# TeachableM5stack
 TeachableMachineで作成したモデルをEZDataに蓄積するWebサービス
 ![スクリーンショット 2023-11-29 012627](https://github.com/y-fujimoto1009/TeachableMachine2M5stack/assets/63994394/1ee96028-ff96-4afd-8252-29c55b7c80eb)<br>
 TeachableMachineで出力したモデルURLと、EZDataのトークンを指定するだけで5秒間隔で判定結果のラベルを蓄積します。<br>
