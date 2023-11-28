@@ -1,70 +1,103 @@
-// Copyright (c) 2019 ml5
-//
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
-/* ===
-ml5 Example
-Webcam Image Classification using a pre-trained customized model and p5.js
-This example uses p5 preload function to create the classifier
-=== */
-
-// Classifier Variable
 let classifier;
-// Model URL
-let imageModelURL = 'https://teachablemachine.withgoogle.com/models/bXy2kDNi/';
-
-// Video
 let video;
 let flippedVideo;
-// To store the classification
 let label = "";
-
-// Load the model first
-function preload() {
-  classifier = ml5.imageClassifier(imageModelURL + 'model.json');
-}
+let modelURL, EZDataToken;
+let isClassifying = false;
+let interval;
+const EZDataURL = "https://ezdata.m5stack.com/api/store/"
+const EZDataTopic = "/result"
 
 function setup() {
-  createCanvas(320, 260);
-  // Create the video
+  //video canvas
+  createCanvas(320, 240);
   video = createCapture(VIDEO);
   video.size(320, 240);
   video.hide();
 
-  flippedVideo = ml5.flipImage(video)
-  // Start classifying
+  //event listener
+  select('#startButton').mousePressed(startClassification);
+  select('#stopButton').mousePressed(stopClassification);
+}
+
+function startClassification() {
+  modelURL = select('#modelURL').value();
+  EZDataToken = select('#EZDataToken').value();
+  
+  if (!modelURL || !EZDataToken) {
+    appendLog('サーバーURLまたはラベルが設定されていません。');
+    return;
+  }
+
+  //load model
+  classifier = ml5.imageClassifier(modelURL + 'model.json', video, modelLoaded);
+  isClassifying = true;
+  
+  //interval needs to be about 5 seconds.
+  interval = setInterval(() => {
+    if (EZDataToken && label) {
+      sendData();
+    }
+  }, 5000);
+}
+
+function stopClassification() {
+  isClassifying = false;
+  if (interval) {
+    clearInterval(interval);
+  }
+  appendLog("停止しました。");
+}
+
+function modelLoaded() {
+  appendLog("モデルが読み込まれました。");
   classifyVideo();
 }
 
 function draw() {
   background(0);
-  // Draw the video
-  image(flippedVideo, 0, 0);
-
-  // Draw the label
+  if (video && isClassifying) {
+    flippedVideo = ml5.flipImage(video);
+    image(flippedVideo, 0, 0);
+  }
+  
+  //label display
   fill(255);
   textSize(16);
   textAlign(CENTER);
   text(label, width / 2, height - 4);
 }
 
-// Get a prediction for the current video frame
 function classifyVideo() {
-  flippedVideo = ml5.flipImage(video)
-  classifier.classify(flippedVideo, gotResult);
+   if (isClassifying) {
+    classifier.classify(flippedVideo, gotResult);
+  }
 }
 
-// When we get a result
 function gotResult(error, results) {
-  // If there is an error
   if (error) {
-    console.error(error);
+    appendLog(error);
+    appendLog("モデル読み込みに失敗しました。");
     return;
   }
-  // The results are in an array ordered by confidence.
-  // console.log(results[0]);
   label = results[0].label;
-  // Classifiy again!
   classifyVideo();
+}
+
+function sendData() {
+  //ezData
+  let contentType = 'application/json';
+  httpPost(EZDataURL + EZDataToken + EZDataTopic, contentType, { value: label }, function (result) {
+    appendLog("送信結果:「 " + label + "」を送信");
+  }, function (error) {
+    appendLog(error);
+    appendLog("送信に失敗しました。");
+    return;
+  });
+}
+
+function appendLog(message) {
+  let logElem = select('#log');
+  logElem.value(logElem.value() + message + '\n');
+  logElem.elt.scrollTop = logElem.elt.scrollHeight;
 }
