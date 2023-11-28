@@ -4,18 +4,18 @@ TeachableMachineで作成したモデルをEZDataに蓄積するWebサービス
 TeachableMachineで出力したモデルURLと、EZDataのトークンを指定するだけで5秒間隔で判定結果のラベルを蓄積します。<br>
 UIFlowなどで処理を作成すれば、機械学習モデルとM5stackを簡単に連携することができます。<br>
 <br>
-**※現時点では画像プロジェクトのみ対応しています。**
+**※現時点では画像プロジェクト、UIFlowでのみテストしています。**
 
 ---
 
 ### 必要な物 ###
-* [M5Stack](http://www.m5stack.com/ "Title") (Core2で動作確認をしました。EZDataへ接続できればおそらくどのシリーズでもOKと思います。)<br>
+* [M5Stack](http://www.m5stack.com/ "M5stack") (Core2で動作確認をしました。EZDataへ接続できればおそらくどのシリーズでもOKと思います。)<br>
 * UIFlow  (V1.12.8で動作確認をしました。)<br>
 * EZData  (V1で動作確認をしました。)<br>
 
 ### 使い方 ###
 #### Teachable MachineのモデルURLを取得 ####
-1.[Teachable Machine](https://teachablemachine.withgoogle.com/ "Title")へアクセスし、画像プロジェクトを選択<br>
+1.[Teachable Machine](https://teachablemachine.withgoogle.com/ "Teachable Machine")へアクセスし、画像プロジェクトを選択<br>
 2.学習データをトレーニングさせ、モデルをエクスポートする<br>
 3.共有可能なリンクを取得し、メモしておく<br>
 
@@ -24,7 +24,7 @@ UIFlowなどで処理を作成すれば、機械学習モデルとM5stackを簡�
 2.EzDataのSet Current Tokenボタンよりトークンを生成し、メモしておく<br>
 
 #### 判定結果の蓄積 ####
-1.[Github Page](https://y-fujimoto1009.github.io/TeachableMachine2M5stack/ "Title")へアクセス<br>
+1.[Github Page](https://y-fujimoto1009.github.io/TeachableMachine2M5stack/ "Github Page")へアクセス<br>
 2.モデルURLと、トークンを入力し、実行ボタンを押す<br>
 3.接続が成功すれば、5秒間隔（EZDataの仕様上3秒間隔以上でないとエラーを吐くため）で判定結果がEZDataに蓄積される<br>
 4.蓄積状況はUIFlowのEZData→EZData Managerから確認可能<br>
