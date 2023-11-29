@@ -24,7 +24,7 @@ UIFlowなどで処理を作成すれば、機械学習モデルとM5stackを簡�
 2.EzDataのSet Current Tokenボタンよりトークンを生成し、メモしておく<br>
 
 #### 判定結果の蓄積 ####
-1.[Github Page](https://y-fujimoto1009.github.io/TeachableMachine2M5stack/ "Github Page")へアクセス<br>
+1.[Github Page](https://y-fujimoto1009.github.io/TeachableM5stack/ "Github Page")へアクセス<br>
 2.モデルURLと、トークンを入力し、実行ボタンを押す<br>
 3.接続が成功すれば、5秒間隔（EZDataの仕様上3秒間隔以上でないとエラーを吐くため）で判定結果がEZDataに蓄積される<br>
 4.蓄積状況はUIFlowのEZData→EZData Managerから確認可能<br>
